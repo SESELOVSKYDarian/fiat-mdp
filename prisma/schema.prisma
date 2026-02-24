@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum RaffleStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  RESULT_PUBLISHED
+}
+
+enum ParticipationValidationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model User {
+  id                String          @id @default(uuid())
+  fullName          String
+  email             String          @unique
+  passwordHash      String
+  dni               String
+  city              String
+  phone             String?
+  role              UserRole        @default(USER)
+  createdAt         DateTime        @default(now())
+  createdRaffles    Raffle[]        @relation("CreatedRaffles")
+  wonRaffles        Raffle[]        @relation("WinnerRaffles")
+  participations    Participation[]
+  updatedRules      RulesConfig[]
+}
+
+model Raffle {
+  id                    String          @id @default(uuid())
+  title                 String
+  prize                 String
+  participationDeadline DateTime
+  resultDate            DateTime
+  status                RaffleStatus    @default(OPEN)
+  winnerUserId          String?
+  createdById           String
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  winnerUser            User?           @relation("WinnerRaffles", fields: [winnerUserId], references: [id])
+  createdBy             User            @relation("CreatedRaffles", fields: [createdById], references: [id])
+  participations        Participation[]
+
+  @@index([createdById])
+  @@index([winnerUserId])
+}
+
+model Participation {
+  id               String                        @id @default(uuid())
+  raffleId         String
+  userId           String
+  reason           String
+  hasFiatGiama     Boolean
+  plate            String?
+  validationStatus ParticipationValidationStatus @default(PENDING)
+  createdAt        DateTime                      @default(now())
+  raffle           Raffle                        @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  user             User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([raffleId, userId])
+  @@index([raffleId])
+  @@index([userId])
+}
+
+model RulesConfig {
+  id          String   @id
+  text        String
+  updatedById String
+  updatedAt   DateTime @updatedAt
+  updatedBy   User     @relation(fields: [updatedById], references: [id])
+}

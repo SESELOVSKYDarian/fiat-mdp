@@ -1,0 +1,162 @@
+.site-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(10, 36, 68, 0.78);
+  backdrop-filter: blur(12px);
+}
+
+.site-shell__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.9rem 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.site-shell__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.95rem;
+  text-decoration: none;
+}
+
+.site-shell__logo {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 10px rgba(10, 36, 68, 0.35));
+}
+
+.site-shell__logo--copa {
+  filter: brightness(0) invert(1) drop-shadow(0 3px 10px rgba(10, 36, 68, 0.35));
+}
+
+.site-shell__logo--fiat {
+  width: 72px;
+}
+
+.site-shell__nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.site-shell__link {
+  padding: 0.6rem 1rem;
+  border-radius: 0.7rem;
+  color: #f6f8fc;
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.site-shell__link:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.site-shell__link.is-active {
+  background: #f9ed3d;
+  color: #0a2444;
+  font-weight: 800;
+}
+
+.site-shell__auth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  padding: 0.65rem 1rem;
+  border-radius: 0.8rem;
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #0a2444;
+  background: #f9ed3d;
+  border: 1px solid rgba(249, 237, 61, 0.7);
+}
+
+.site-shell__toggle {
+  display: none;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.12);
+  color: #f6f8fc;
+  border-radius: 0.65rem;
+  padding: 0.45rem 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.site-shell__mobile {
+  display: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 0.6rem 1rem 1rem;
+}
+
+.site-shell__mobile.is-open {
+  display: block;
+}
+
+.site-shell__mobile-card {
+  max-width: 1280px;
+  margin: 0 auto;
+  border-radius: 0.95rem;
+  background: rgba(10, 36, 68, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0.45rem;
+}
+
+.site-shell__mobile .site-shell__link,
+.site-shell__mobile .site-shell__auth {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 0.2rem 0;
+}
+
+body.site-shell-ready {
+  padding-top: 94px;
+}
+
+body.site-shell-ready header:first-of-type,
+body.site-shell-ready #mobileNav {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .site-shell__inner {
+    grid-template-columns: auto auto;
+  }
+
+  .site-shell__nav,
+  .site-shell__auth {
+    display: none;
+  }
+
+  .site-shell__toggle {
+    display: inline-flex;
+    justify-self: end;
+  }
+
+  .site-shell__logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .site-shell__logo--fiat {
+    width: 66px;
+  }
+}
