@@ -1,0 +1,60 @@
+:root {
+  --brand-navy: #0a2444;
+  --brand-sky: #36c3f2;
+  --brand-yellow: #f9ed3d;
+  --brand-magenta: #ed1a6b;
+  --brand-paper: #f6f8fc;
+  --brand-text-on-light: #0a2444;
+  --brand-text-on-dark: #f6f8fc;
+}
+
+@font-face {
+  font-family: "Rama Gothic C Bold";
+  src: local("Rama Gothic C Bold"), local("Rama Gothic C");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rama Gothic E SemiBold";
+  src: local("Rama Gothic E SemiBold"), local("Rama Gothic E");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+.font-brand-main {
+  font-family: "Montserrat", sans-serif;
+}
+
+.font-brand-big-title {
+  font-family: "Rama Gothic C Bold", "Montserrat", sans-serif;
+}
+
+.font-brand-title {
+  font-family: "Rama Gothic E SemiBold", "Montserrat", sans-serif;
+}
+
+.brand-watermark {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.1;
+}
+
+.brand-watermark-copa {
+  top: 0;
+  right: -72px;
+  width: min(40vw, 420px);
+}
+
+.brand-watermark-fiat {
+  bottom: 0;
+  left: -60px;
+  width: min(35vw, 360px);
+}
