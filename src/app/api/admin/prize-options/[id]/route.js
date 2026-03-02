@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { hasPrizeOptionModel, prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/api-auth";
 import { updatePrizeOptionSchema } from "@/lib/validators";
 import { sanitizeText } from "@/lib/sanitize";
@@ -7,6 +7,12 @@ import { mapPrizeOption } from "@/lib/mappers";
 export async function PATCH(request, { params }) {
   const { error } = await requireAdmin();
   if (error) return error;
+  if (!hasPrizeOptionModel()) {
+    return Response.json(
+      { error: "Falta actualizar la base de datos para premios posibles. Ejecuta migraciones y redeploy." },
+      { status: 503 }
+    );
+  }
 
   try {
     const body = await request.json();
@@ -34,6 +40,12 @@ export async function PATCH(request, { params }) {
 export async function DELETE(_request, { params }) {
   const { error } = await requireAdmin();
   if (error) return error;
+  if (!hasPrizeOptionModel()) {
+    return Response.json(
+      { error: "Falta actualizar la base de datos para premios posibles. Ejecuta migraciones y redeploy." },
+      { status: 503 }
+    );
+  }
 
   try {
     const current = await prisma.prizeOption.findUnique({ where: { id: params.id } });

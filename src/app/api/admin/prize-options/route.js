@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { hasPrizeOptionModel, prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/api-auth";
 import { createPrizeOptionSchema } from "@/lib/validators";
 import { sanitizeText } from "@/lib/sanitize";
@@ -7,6 +7,9 @@ import { mapPrizeOption } from "@/lib/mappers";
 export async function GET() {
   const { error } = await requireAdmin();
   if (error) return error;
+  if (!hasPrizeOptionModel()) {
+    return Response.json({ items: [] });
+  }
 
   try {
     const items = await prisma.prizeOption.findMany({
@@ -21,6 +24,12 @@ export async function GET() {
 export async function POST(request) {
   const { session, error } = await requireAdmin();
   if (error) return error;
+  if (!hasPrizeOptionModel()) {
+    return Response.json(
+      { error: "Falta actualizar la base de datos para premios posibles. Ejecuta migraciones y redeploy." },
+      { status: 503 }
+    );
+  }
 
   try {
     const body = await request.json();

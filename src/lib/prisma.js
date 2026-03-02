@@ -11,3 +11,7 @@ export const prisma =
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
+
+export function hasPrizeOptionModel() {
+  return Boolean(prisma?.prizeOption && typeof prisma.prizeOption.findMany === "function");
+}

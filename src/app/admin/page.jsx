@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { hasPrizeOptionModel, prisma } from "@/lib/prisma";
 import { mapParticipation, mapPrizeOption, mapRaffle } from "@/lib/mappers";
 import AdminPanelClient from "@/components/admin/AdminPanelClient";
 
@@ -41,9 +41,11 @@ export default async function AdminPage() {
         raffle: { select: { title: true } }
       }
     }),
-    prisma.prizeOption.findMany({
-      orderBy: { createdAt: "desc" }
-    })
+    hasPrizeOptionModel()
+      ? prisma.prizeOption.findMany({
+          orderBy: { createdAt: "desc" }
+        })
+      : Promise.resolve([])
   ]);
 
   return (

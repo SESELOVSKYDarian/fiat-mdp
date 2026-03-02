@@ -10,6 +10,9 @@ export default async function PerfilPage() {
   if (!session?.user?.id) {
     redirect("/login");
   }
+  if (session.user.role === "ADMIN") {
+    redirect("/admin");
+  }
 
   return <ProfileClient user={session.user} />;
 }
