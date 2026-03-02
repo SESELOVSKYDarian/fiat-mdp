@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { mapParticipation, mapRaffle } from "@/lib/mappers";
+import { mapParticipation, mapPrizeOption, mapRaffle } from "@/lib/mappers";
 import AdminPanelClient from "@/components/admin/AdminPanelClient";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +16,7 @@ export default async function AdminPage() {
     redirect("/perfil");
   }
 
-  const [raffles, users, participations] = await Promise.all([
+  const [raffles, users, participations, prizeOptions] = await Promise.all([
     prisma.raffle.findMany({
       orderBy: { createdAt: "desc" },
       include: { winnerUser: { select: { id: true, fullName: true } } }
@@ -40,6 +40,9 @@ export default async function AdminPage() {
         user: { select: { fullName: true, email: true } },
         raffle: { select: { title: true } }
       }
+    }),
+    prisma.prizeOption.findMany({
+      orderBy: { createdAt: "desc" }
     })
   ]);
 
@@ -48,6 +51,7 @@ export default async function AdminPage() {
       initialRaffles={raffles.map(mapRaffle)}
       initialUsers={users.map((u) => ({ ...u, createdAt: u.createdAt.toISOString() }))}
       initialParticipations={participations.map(mapParticipation)}
+      initialPrizeOptions={prizeOptions.map(mapPrizeOption)}
     />
   );
 }

@@ -54,3 +54,11 @@ export const pickWinnerSchema = z.object({
   mode: z.enum(["MANUAL", "RANDOM"]),
   participationId: z.string().uuid().optional()
 });
+
+export const createPrizeOptionSchema = z.object({
+  name: z.string().min(2).max(180)
+});
+
+export const updatePrizeOptionSchema = z.object({
+  name: z.string().min(2).max(180)
+});

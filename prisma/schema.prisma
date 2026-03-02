@@ -37,6 +37,7 @@ model User {
   role              UserRole        @default(USER)
   createdAt         DateTime        @default(now())
   createdRaffles    Raffle[]        @relation("CreatedRaffles")
+  createdPrizeOptions PrizeOption[] @relation("CreatedPrizeOptions")
   wonRaffles        Raffle[]        @relation("WinnerRaffles")
   participations    Participation[]
   updatedRules      RulesConfig[]
@@ -84,4 +85,15 @@ model RulesConfig {
   updatedById String
   updatedAt   DateTime @updatedAt
   updatedBy   User     @relation(fields: [updatedById], references: [id])
+}
+
+model PrizeOption {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   User     @relation("CreatedPrizeOptions", fields: [createdById], references: [id])
+
+  @@index([createdById])
 }

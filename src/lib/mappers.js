@@ -28,3 +28,12 @@ export function mapParticipation(item) {
     raffleTitle: item.raffle?.title || null
   };
 }
+
+export function mapPrizeOption(item) {
+  return {
+    id: item.id,
+    name: item.name,
+    createdAt: item.createdAt.toISOString(),
+    updatedAt: item.updatedAt.toISOString()
+  };
+}

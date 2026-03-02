@@ -62,6 +62,15 @@ async function main() {
     }
   ];
 
+  const prizeOptions = ["2 entradas oficiales", "Acceso institucional"];
+  for (const name of prizeOptions) {
+    await prisma.prizeOption.upsert({
+      where: { name },
+      update: { name, createdById: admin.id },
+      create: { name, createdById: admin.id }
+    });
+  }
+
   for (const raffle of raffles) {
     const seedId = raffle.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + "-seed";
     await prisma.raffle.upsert({
