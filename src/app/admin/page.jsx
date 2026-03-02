@@ -16,7 +16,7 @@ export default async function AdminPage() {
     redirect("/perfil");
   }
 
-  const [raffles, users, participations, prizeOptions] = await Promise.all([
+  const [raffles, users, participations] = await Promise.all([
     prisma.raffle.findMany({
       orderBy: { createdAt: "desc" },
       include: { winnerUser: { select: { id: true, fullName: true } } }
@@ -40,13 +40,19 @@ export default async function AdminPage() {
         user: { select: { fullName: true, email: true } },
         raffle: { select: { title: true } }
       }
-    }),
-    hasPrizeOptionModel()
-      ? prisma.prizeOption.findMany({
-          orderBy: { createdAt: "desc" }
-        })
-      : Promise.resolve([])
+    })
   ]);
+
+  let prizeOptions = [];
+  if (hasPrizeOptionModel()) {
+    try {
+      prizeOptions = await prisma.prizeOption.findMany({
+        orderBy: { createdAt: "desc" }
+      });
+    } catch (_error) {
+      prizeOptions = [];
+    }
+  }
 
   return (
     <AdminPanelClient
